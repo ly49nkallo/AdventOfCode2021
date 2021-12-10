@@ -1,17 +1,43 @@
 import numpy as np
 from functools import reduce
 def main():
-    data = import_data(path='input.txt')
+    data = import_data(path='input.txt')      
     data = [list(d)[:-1] for d in data]
     data = np.array(data, dtype='int8')
-    print(data)
-    o2rating = list([d for d in data])
     i = 0
-    while len(o2rating) > 1:
-        # if the 1 bit is more common
-        data = list(filter(lambda x: x[i] == int(sum(data.transpose()[i]) > data.shape[1] / 2),o2rating))
+    d = list(data)
+    while i < len(data.T):
+        mcb = 0
+        if (sum(np.transpose(d)[i]) >= len(d) / 2):
+            mcb = 1
+        j = 0
+        while j < len(d.copy()):
+            if d[j][i] != mcb and len(d) > 1:
+                d.pop(j)
+                j -= 1
+            j += 1
         i += 1
-    print(o2rating)
+    assert len(d) == 1
+    oxygenNum = 0
+    for b in d[0]:
+        oxygenNum = 2 * oxygenNum + b
+    i = 0
+    d = list(data)
+    while i < len(data.T):
+        mcb = 0
+        if (sum(np.transpose(d)[i]) < len(d) / 2):
+            mcb = 1
+        j = 0
+        while j < len(d.copy()):
+            if d[j][i] != mcb and len(d) > 1:
+                d.pop(j)
+                j -= 1
+            j += 1
+        i += 1
+    co2num = 0
+    for b in d[0]:
+        co2num = 2 * co2num + b
+    print(oxygenNum, co2num, oxygenNum * co2num)
 
 def import_data(path:str) -> list:
     data = list()

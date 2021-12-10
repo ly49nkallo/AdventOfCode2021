@@ -3,15 +3,17 @@ def main():
     print(len(data))
     horizontal = 0
     depth = 0
+    aim = 0
     for d in data:
         command,x = d.split()
         x = int(x)
         if command == 'forward':
             horizontal += x
+            depth += aim * x
         elif command == 'up':
-            depth -= x
+            aim -= x
         elif command == 'down':
-            depth += x
+            aim += x
     print(horizontal, depth, horizontal*depth)
 
 
